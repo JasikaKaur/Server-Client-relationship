@@ -108,10 +108,7 @@ else if(!strncmp(option, "send",4))
                 while(*ptr <= ' ') ptr++;
                 sendtoalias(&me, temp, ptr);
             }
-
-        }
-else if(!strncmp(option, "clear", 4)) {
-            clear(&me, &option[5]);
+	exit;
         }
         else if(!strncmp(option, "send", 4)) {
             sendtoall(&me, &option[5]);

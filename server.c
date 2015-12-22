@@ -1,20 +1,17 @@
- 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
- 
 #include <netdb.h>
 #include <unistd.h>
 #include <pthread.h>
- 
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
  
 #define IP "127.0.0.1"
-#define PORT 8080
+#define PORT 8081
 #define BACKLOG 10
 #define CLIENTS 10
  
@@ -236,7 +233,7 @@ void *client_handler(void *fd) {
             }
             pthread_mutex_unlock(&clientlist_mutex);
         }
-        else if(!strcmp(packet.option, "whisp")) {
+        else if(!strcmp(packet.option, "user")) {
             int i;
             char target[ALIASLEN];
             for(i = 0; packet.buff[i] != ' '; i++); packet.buff[i++] = 0;
@@ -247,10 +244,10 @@ void *client_handler(void *fd) {
                     struct PACKET spacket;
                     memset(&spacket, 0, sizeof(struct PACKET));
                     if(!compare(&curr->threadinfo, &threadinfo)) continue;
-                    strcpy(spacket.option, "msg");
+                    strcpy(spacket.option, "user");
                     strcpy(spacket.alias, packet.alias);
                     strcpy(spacket.buff, &packet.buff[i]);
-                    sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct PACKET), 0);
+sent=send(curr->threadinfo.sockfd,(void *)&spacket,sizeof(struct PACKET), 0);
                 }
             }
             pthread_mutex_unlock(&clientlist_mutex);
